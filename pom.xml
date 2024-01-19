@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <name>iR-POM</name>
+  <groupId>us.irdev</groupId>
+  <artifactId>ir-pom</artifactId>
+  <version>1.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- project static versions -->
+    <maven-minimum.version>3.6.0</maven-minimum.version>
+    <java.version>1.8</java.version>
+
+    <!-- dependency versions - get a report on updates with
+          > mvn -N versions:display-property-updates
+         or omit the -N to traverse the entire project hierarchy -->
+
+    <!-- maven "core" plugins -->
+    <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
+    <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
+    <maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
+    <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
+    <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
+    <maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
+    <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
+    <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+    <maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
+    <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
+    <maven-clean-plugin.version>3.3.2</maven-clean-plugin.version>
+    <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+    <maven-install-plugin.version>3.1.1</maven-install-plugin.version>
+    <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
+    <maven-project-info-reports-plugin.version>3.5.0</maven-project-info-reports-plugin.version>
+
+    <!-- non "core" maven plugins used to help the build process -->
+    <flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
+    <exec-maven-plugin.version>3.1.1</exec-maven-plugin.version>
+    <versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
+    <build-helper-maven-plugin.version>3.5.0</build-helper-maven-plugin.version>
+
+    <!-- really fundamental dependency versions, not "core" maven, testing, coverage, logging -->
+    <log4j.version>2.21.1</log4j.version>
+    <jackson.version>2.16.1</jackson.version>
+    <junit-jupiter.version>5.10.1</junit-jupiter.version>
+    <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
+
+    <!-- kotlin language support -->
+    <kotlin.code.style>official</kotlin.code.style>
+    <kotlin.language.version>1.9</kotlin.language.version>
+    <kotlin.version>1.9.20</kotlin.version>
+  </properties>
+
+  <developers>
+    <developer>
+      <name>Bretton Wade</name>
+      <email>bretton.wade@irdev.us</email>
+      <organization>Inbound Research LLC</organization>
+      <organizationUrl>https://www.irdev.us/</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:ssh://git@github.com:InboundResearch/POM.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:InboundResearch/POM.git</developerConnection>
+    <url>https://github.com/InboundResearch/POM</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <!-- deployment artifactory - credentials are supplied in settings.xml by id -->
+  <distributionManagement>
+    <repository>
+      <id>central</id>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <snapshotRepository>
+      <id>snapshots</id>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <!-- BOMs -->
+  <dependencyManagement>
+    <dependencies>
+      <!-- all log4j2 dependencies are provided, so we don't need to specify them, ever -->
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-bom</artifactId>
+        <version>${log4j.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+
+      <!-- all jackson dependencies are provided, so we don't need to specify them, ever -->
+      <dependency>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
+        <version>${jackson.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+
+      <!-- kotlin language -->
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-bom</artifactId>
+        <version>${kotlin.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- NOTE: we provide the core for the test scope on the notion that any deliverable will
+               provide the core for deployment. most libraries shouldn't provide this dependency to
+               avoid duplicates and version mismatches. -->
+    <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+    </dependency>
+
+    <!-- NOTE: we provide these to facilitate configuring log4j2 with json rather than xml -->
+    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit-jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- make sure the build environment is up to snuff -->
+      <plugin>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>${maven-enforcer-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>${maven-minimum.version}</version>
+                </requireMavenVersion>
+                <requireJavaVersion>
+                  <version>${java.version}</version>
+                </requireJavaVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- configure the kotlin compiler plugin and enable multi-language support -->
+      <!--
+      <plugin>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-maven-plugin</artifactId>
+        <version>${kotlin.version}</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <languageVersion>${kotlin.language.version}</languageVersion>
+              <apiVersion>${kotlin.language.version}</apiVersion>
+              <jvmTarget>${java.version}</jvmTarget>
+              <sourceDirs>
+                <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                <sourceDir>${project.basedir}/src/main/java</sourceDir>
+              </sourceDirs>
+            </configuration>
+          </execution>
+          <execution>
+            <id>test-compile</id>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+            <configuration>
+              <languageVersion>${kotlin.language.version}</languageVersion>
+              <apiVersion>${kotlin.language.version}</apiVersion>
+              <jvmTarget>${java.version}</jvmTarget>
+              <sourceDirs>
+                <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
+                <sourceDir>${project.basedir}/src/test/java</sourceDir>
+              </sourceDirs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+        <configuration>
+          <encoding>UTF-8</encoding>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+          <showWarnings>true</showWarnings>
+          <showDeprecation>true</showDeprecation>
+          <fork>true</fork>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>default-testCompile</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>java-compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>java-test-compile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      -->
+
+      <!-- configure the java compiler, this works for 1.8 up to the current version (21 as of this
+           writing) -->
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+        <configuration>
+          <encoding>UTF-8</encoding>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+          <showWarnings>true</showWarnings>
+          <showDeprecation>true</showDeprecation>
+          <fork>true</fork>
+        </configuration>
+      </plugin>
+
+      <!-- sets the is.snapshot property to true if version is a SNAPSHOT - these are executed in
+           POM order, so we want this to stay near the top -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>${build-helper-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>build-helper-regex-is-snapshot</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>regex-properties</goal>
+            </goals>
+            <configuration>
+              <regexPropertySettings>
+                <regexPropertySetting>
+                  <name>is.snapshot</name>
+                  <value>${project.version}</value>
+                  <regex>.*-SNAPSHOT</regex>
+                  <replacement>true</replacement>
+                  <failIfNoMatch>false</failIfNoMatch>
+                </regexPropertySetting>
+              </regexPropertySettings>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- some build level reporting - as above for the build-helper-maven-plugin, order is
+           important, this belongs after the build helper... -->
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>${maven-antrun-plugin.version}</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <exportAntProperties>true</exportAntProperties>
+              <target>
+                <!-- this profile.name comes from the settings.xml/profile properties. -->
+                <echo level="info" message="current profile: ${profile.name}" />
+
+                <!-- we use this property to skip some steps in snapshot builds. -->
+                <echo level="info" message="is.snapshot: ${is.snapshot} (${project.version})" />
+
+                <!-- ...such as the 'source' plugin, which does not have a 'skip' configuration like
+                     most other maven plugins do. -->
+                <property name="maven.source.skip">${is.snapshot}</property>
+
+                <!-- just some reporting to help with debugging. -->
+                <echo level="info" message="project.basedir: ${project.basedir}" />
+                <!-- <echo level="info" message="maven.multiModuleProjectDirectory: ${maven.multiModuleProjectDirectory}"/> -->
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- generate docs from javadoc-formatted comments embedded in the source. the aggregate goal
+           adds the full suite of docs (including multi-module builds) to the site output. -->
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven-javadoc-plugin.version}</version>
+        <configuration>
+          <doclint>none</doclint>
+          <skip>${is.snapshot}</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>aggregate</id>
+            <phase>package</phase>
+            <goals>
+              <goal>aggregate</goal>
+            </goals>
+            <configuration>
+              <reportOutputDirectory>${project.reporting.outputDirectory}</reportOutputDirectory>
+              <destDir>javadocs</destDir>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- enable testing -->
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
+      </plugin>
+
+      <!-- embed the java source into a library to facilitate debugging for downstream libraries -->
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>${maven-source-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>source</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- this is implicitly drawn in by the java compiler at an older version, we make it explicit
+       because the default version is deprecated and causes warnings -->
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven-resources-plugin.version}</version>
+      </plugin>
+
+      <!-- establish the version of the assembly plugin to use in child projects -->
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${maven-assembly-plugin.version}</version>
+      </plugin>
+
+      <!-- establish the version of the deploy plugin to use in child projects -->
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>${maven-deploy-plugin.version}</version>
+      </plugin>
+
+      <!-- establish the version of the release plugin and its configuration to use in child
+           projects -->
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>${maven-release-plugin.version}</version>
+        <configuration>
+          <preparationGoals>clean verify</preparationGoals>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>${maven-clean-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>${maven-install-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>${maven-site-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${maven-project-info-reports-plugin.version}</version>
+      </plugin>
+
+      <!-- add jacoco code coverage. this happens in two parts: the first is during tests when run
+           data is collected (prepare-agent). the second is the report created during the verify
+           phase (after tests pass). for single-module projects, this is sufficient. -->
+      <!-- NOTE: this has a 'code smell' because the report should be done in the reporting section
+           of the pom, but that's so poorly documented we're not surprised this is incorrect. -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <title>${project.name} ${project.version}</title>
+              <footer>Code Coverage Report for ${project.groupId}.${project.artifactId} ${project.version}</footer>
+              <includes>
+                <include>**/*.class</include>
+              </includes>
+              <outputDirectory>${project.reporting.outputDirectory}/coverage</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- for multi-module projects, an aggregating reporting module is needed, and a separate
+           aggregate report is generated from all the aggregate reporting module's dependencies. all
+            other modules can keep the default configuration above, but the reporting module should
+            get the following plugin configurations added. -->
+      <!--
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>report-aggregate</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report-aggregate</goal>
+            </goals>
+            <configuration>
+              <title>${project.artifactId} ${project.version}</title>
+              <footer>Code Coverage Report for ${project.groupId} ${project.version}</footer>
+              <includes>
+                <include>**/*.class</include>
+              </includes>
+              <outputDirectory>${project.parent.reporting.outputDirectory}/coverage</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      -->
+
+      <!-- a few common helper plugings we'll use -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>${exec-maven-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <version>${flatten-maven-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>${versions-maven-plugin.version}</version>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>

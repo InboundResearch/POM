@@ -1,0 +1,16 @@
+{
+  "configuration": {
+    "status": "warn",
+    "appenders": {
+      "appender": [
+        { "type": "Console", "name": "stdout", "target": "SYSTEM_OUT", "PatternLayout": { "pattern": "%d{HH:mm:ss.SSS} %-5level %-40logger{-4} %msg%n" } }
+        ]
+    },
+    "loggers": {
+      "root": { "level": "warn", "AppenderRef": { "ref": "stdout" } },
+      "logger": [
+        { "name": "irdev.us", "level": "debug", "additivity": "false", "AppenderRef": { "ref": "stdout" } }
+        ]
+    }
+  }
+}
