@@ -24,6 +24,7 @@
     <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
     <maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
     <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
+    <maven-failsafe-plugin.version>3.2.5</maven-failsafe-plugin.version>
     <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
     <maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
     <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
@@ -45,7 +46,7 @@
     <!-- really fundamental dependency versions, not "core" maven, testing, coverage, logging -->
     <log4j.version>2.21.1</log4j.version>
     <jackson.version>2.16.1</jackson.version>
-    <junit-jupiter.version>5.10.1</junit-jupiter.version>
+    <junit-jupiter.version>5.10.2</junit-jupiter.version>
     <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
 
     <!-- kotlin language support -->
@@ -375,6 +376,11 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven-surefire-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${maven-failsafe-plugin.version}</version>
       </plugin>
 
       <!-- embed the java source into a library to facilitate debugging for downstream libraries -->
