@@ -5,7 +5,7 @@
   <name>iR-POM</name>
   <groupId>us.irdev</groupId>
   <artifactId>ir-pom</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
@@ -365,6 +365,11 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven-surefire-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${maven-failsafe-plugin.version}</version>
       </plugin>
 
       <!-- embed the java source into a library to facilitate debugging for downstream libraries -->
