@@ -61,6 +61,13 @@
     <kotlin.version>2.1.0</kotlin.version>
   </properties>
 
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://opensource.org/license/mit/</url>
+    </license>
+  </licenses>
+
   <developers>
     <developer>
       <name>Bretton Wade</name>
@@ -73,6 +80,7 @@
   <scm>
     <connection>scm:git:ssh://git@github.com/InboundResearch/POM.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/InboundResearch/POM.git</developerConnection>
+    <url>https://github.com/InboundResearch/POM</url>
     <tag>HEAD</tag>
   </scm>
 
