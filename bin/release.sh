@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
 # release the main project
-mvn clean relase:prepare && mvn release:perform;
+mvn clean release:prepare && mvn release:perform;
 
 # do something to make sure the readmes are up to date, and the kotlin sub-project pom is up to date
 # release the kotlin project
