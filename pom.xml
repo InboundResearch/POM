@@ -71,7 +71,6 @@
     <connection>scm:git:ssh://git@github.com/InboundResearch/POM.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/InboundResearch/POM.git</developerConnection>
     <url>https://github.com/InboundResearch/POM</url>
-    <tag>HEAD</tag>
   </scm>
 
   <!-- BOMs -->
