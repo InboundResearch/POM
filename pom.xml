@@ -5,7 +5,7 @@
   <name>iR-POM</name>
   <groupId>us.irdev</groupId>
   <artifactId>ir-pom</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
@@ -71,7 +71,7 @@
     <connection>scm:git:ssh://git@github.com/InboundResearch/POM.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/InboundResearch/POM.git</developerConnection>
     <url>https://github.com/InboundResearch/POM</url>
-    <tag>ir-pom-1.0.1</tag>
+    <tag>ir-pom-1.0.2</tag>
   </scm>
 
   <!-- BOMs -->
