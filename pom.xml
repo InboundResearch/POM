@@ -7,7 +7,7 @@
   <artifactId>ir-pom</artifactId>
   <version>1.0.3-SNAPSHOT</version>
   <description>A root level POM for iR projects.</description>
-  <url>https://github.com/InboundResearch/POM</url>
+  <url>https://irdev.us</url>
   <packaging>pom</packaging>
 
   <properties>
