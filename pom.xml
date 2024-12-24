@@ -39,6 +39,7 @@
     <maven-site-plugin.version>3.21.0</maven-site-plugin.version>
     <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
     <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
+    <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
 
     <!-- non "core" maven plugins used to help the build process -->
     <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
