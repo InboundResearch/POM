@@ -18,7 +18,7 @@
     <java.version>17</java.version>
 
     <!-- dependency versions - get a report on updates with
-          > mvn -N versions:display-property-updates
+          > mvn -N versions:display-property-updates -DallowMajorUpdates=false
          or omit the -N to traverse the entire project hierarchy -->
 
     <!-- maven "core" plugins -->
@@ -37,7 +37,7 @@
     <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
     <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
     <maven-site-plugin.version>3.21.0</maven-site-plugin.version>
-    <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
+    <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
     <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
 
     <!-- non "core" maven plugins used to help the build process -->
@@ -47,9 +47,9 @@
     <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 
     <!-- really fundamental dependency versions, not "core" maven, testing, coverage, logging -->
-    <log4j.version>2.24.2</log4j.version>
+    <log4j.version>2.24.3</log4j.version>
     <jackson.version>2.18.2</jackson.version>
-    <junit-jupiter.version>5.11.3</junit-jupiter.version>
+    <junit-jupiter.version>5.11.4</junit-jupiter.version>
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
 
     <!-- central publishing -->
@@ -272,9 +272,10 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven-compiler-plugin.version}</version>
         <configuration>
-          <encoding>UTF-8</encoding>
+          <encoding>${project.build.sourceEncoding}</encoding>
           <source>${java.version}</source>
           <target>${java.version}</target>
+          <release>${java.version}</release>
           <showWarnings>true</showWarnings>
           <showDeprecation>true</showDeprecation>
           <fork>true</fork>
@@ -365,8 +366,7 @@
               <goal>aggregate</goal>
             </goals>
             <configuration>
-              <reportOutputDirectory>${project.reporting.outputDirectory}</reportOutputDirectory>
-              <destDir>javadocs</destDir>
+              <outputDirectory>${project.reporting.outputDirectory}/javadocs</outputDirectory>
             </configuration>
           </execution>
         </executions>
